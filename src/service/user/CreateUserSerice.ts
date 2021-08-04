@@ -1,7 +1,7 @@
 import { getCustomRepository } from 'typeorm';
 
-import Users from '../models/Users';
-import UsersRepository from '../repositories/UsersRepository';
+import Users from '../../models/Users';
+import UsersRepository from '../../repositories/UsersRepository';
 
 interface UserCreateRequest {
   name: string;

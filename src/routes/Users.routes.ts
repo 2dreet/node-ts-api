@@ -1,6 +1,6 @@
 import { Response, Request, Router } from 'express';
 import { getCustomRepository } from 'typeorm';
-import CreateUserSerice from '../service/CreateUserSerice';
+import CreateUserSerice from '../service/user/CreateUserSerice';
 import UsersRepository from '../repositories/UsersRepository';
 
 const usersRouter = Router();
