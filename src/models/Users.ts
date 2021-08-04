@@ -2,24 +2,26 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
   CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 // @Entity define qual tabela é
-@Entity('appointments')
-class Appointment {
+@Entity('users')
+class Users {
   // Define o id
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  // define tipagem da coluna
+  // define tipagem da coluna / default sem nada é varchar
   @Column('varchar')
-  provider: string;
+  name: string;
 
-  // define tipagem da coluna
-  @Column('timestamp with time zone')
-  date: Date;
+  @Column()
+  email: string;
+
+  @Column()
+  password: string;
 
   @UpdateDateColumn({ name: 'created_at' })
   createdAt: Date;
@@ -28,4 +30,4 @@ class Appointment {
   updatedAt: Date;
 }
 
-export default Appointment;
+export default Users;
