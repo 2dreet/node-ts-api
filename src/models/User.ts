@@ -8,7 +8,7 @@ import {
 
 // @Entity define qual tabela é
 @Entity('users')
-class Users {
+class User {
   // Define o id
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -30,4 +30,4 @@ class Users {
   updatedAt: Date;
 }
 
-export default Users;
+export default User;

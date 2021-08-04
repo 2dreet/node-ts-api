@@ -1,12 +1,12 @@
 import { Response, Request, Router } from 'express';
-import { getCustomRepository } from 'typeorm';
+import { getRepository } from 'typeorm';
+import User from '../models/User';
 import CreateUserSerice from '../service/user/CreateUserSerice';
-import UsersRepository from '../repositories/UsersRepository';
 
 const usersRouter = Router();
 
 usersRouter.get('/', async (request: Request, response: Response) => {
-  const usersRepository = getCustomRepository(UsersRepository);
+  const usersRepository = getRepository(User);
   const users = await usersRepository.find();
   response.json(users);
 });

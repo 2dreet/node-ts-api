@@ -1,7 +1,5 @@
-import { getCustomRepository } from 'typeorm';
-
-import Users from '../../models/Users';
-import UsersRepository from '../../repositories/UsersRepository';
+import { getRepository } from 'typeorm';
+import User from '../../models/User';
 
 interface UserCreateRequest {
   name: string;
@@ -9,26 +7,31 @@ interface UserCreateRequest {
   password: string;
 }
 
-class CreateUserSerice {
-  public async execute(userCreateRequest: UserCreateRequest): Promise<Users> {
-    const usersRepository = getCustomRepository(UsersRepository);
-
-    const findUsersInSameEmail = await usersRepository.findByEmail(
-      userCreateRequest.email,
-    );
-
-    if (findUsersInSameEmail) {
-      throw new Error('This Email is already used');
-    }
-
-    const user = await usersRepository.create({
-      ...userCreateRequest,
+class CreateUserService {
+  public async execute({
+    name,
+    email,
+    password,
+  }: UserCreateRequest): Promise<User> {
+    const userRepository = getRepository(User);
+    const userFinded = await userRepository.findOne({
+      where: { email },
     });
 
-    await usersRepository.save(user);
+    if (userFinded) {
+      throw new Error('Emails already used');
+    }
+
+    const user = userRepository.create({
+      name,
+      email,
+      password,
+    });
+
+    await userRepository.save(user);
 
     return user;
   }
 }
 
-export default CreateUserSerice;
+export default CreateUserService;

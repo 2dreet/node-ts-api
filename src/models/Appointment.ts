@@ -4,7 +4,14 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import User from './User';
+
+// Um para Um (OneToOne)
+// Um para Muitos (OneToMany)
+// Muitos para Muitos (ManyToMany)
 
 // @Entity define qual tabela é
 @Entity('appointments')
@@ -13,9 +20,12 @@ class Appointment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  // define tipagem da coluna
-  @Column('varchar')
-  provider: string;
+  @Column({ name: 'provider_id' })
+  providerId: string;
+
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'provider_id' })
+  provider: User;
 
   // define tipagem da coluna
   @Column('timestamp with time zone')
