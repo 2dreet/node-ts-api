@@ -9,7 +9,7 @@ usersRouter.get('/', async (request: Request, response: Response) => {
   const usersRepository = getRepository(User);
   const users = await usersRepository.find();
 
-  return users;
+  return response.json(users);
 });
 
 usersRouter.post('/', async (request: Request, response: Response) => {
@@ -19,7 +19,7 @@ usersRouter.post('/', async (request: Request, response: Response) => {
       ...request.body,
     });
 
-    delete user.password;
+    user.password = '';
 
     return response.json(user);
   } catch (err) {
