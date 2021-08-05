@@ -21,7 +21,7 @@ class User {
   email: string;
 
   @Column()
-  password: string;
+  password?: string;
 
   @UpdateDateColumn({ name: 'created_at' })
   createdAt: Date;

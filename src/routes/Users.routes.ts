@@ -8,7 +8,8 @@ const usersRouter = Router();
 usersRouter.get('/', async (request: Request, response: Response) => {
   const usersRepository = getRepository(User);
   const users = await usersRepository.find();
-  response.json(users);
+
+  return users;
 });
 
 usersRouter.post('/', async (request: Request, response: Response) => {
@@ -17,6 +18,8 @@ usersRouter.post('/', async (request: Request, response: Response) => {
     const user = await createUser.execute({
       ...request.body,
     });
+
+    delete user.password;
 
     return response.json(user);
   } catch (err) {
