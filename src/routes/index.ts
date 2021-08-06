@@ -10,7 +10,7 @@ routes.get('/', (request: Request, response: Response) => {
   response.json({ message: 'OK' });
 });
 
-routes.use('/sessionsRouter', sessionsRouter);
+routes.use('/sessions', sessionsRouter);
 
 routes.use('/user', usersRouter);
 

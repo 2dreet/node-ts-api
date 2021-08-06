@@ -1,0 +1,1 @@
+docker start banco_api_postgres
