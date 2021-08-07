@@ -1,8 +1,13 @@
 import { Response, Request, Router } from 'express';
 import { getRepository } from 'typeorm';
+import multer from 'multer';
 import User from '../models/User';
 import CreateUserSerice from '../service/user/CreateUserSerice';
+import ensureAuthenticated from '../middlewares/EnsureAuthenticated';
+import uploadConfig from '../config/Upload';
 
+// Aqui configura o uploadConfig com o multer
+const upload = multer(uploadConfig);
 const usersRouter = Router();
 
 usersRouter.get('/', async (request: Request, response: Response) => {
@@ -26,5 +31,19 @@ usersRouter.post('/', async (request: Request, response: Response) => {
     return response.status(400).json({ error: err.message });
   }
 });
+
+// Ao colocar a middleware depois da rota, ela executa apenas para a rota
+usersRouter.patch(
+  '/avatar',
+  ensureAuthenticated,
+  upload.single('avatar'),
+  async (request: Request, response: Response) => {
+    try {
+      return response.json({ ok: true });
+    } catch (err) {
+      return response.status(400).json({ error: err.message });
+    }
+  },
+);
 
 export default usersRouter;
