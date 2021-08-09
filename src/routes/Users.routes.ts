@@ -5,6 +5,7 @@ import User from '../models/User';
 import CreateUserSerice from '../service/user/CreateUserSerice';
 import ensureAuthenticated from '../middlewares/EnsureAuthenticated';
 import uploadConfig from '../config/Upload';
+import UpdateUserAvatarService from '../service/user/UpdateUserAvatarService';
 
 // Aqui configura o uploadConfig com o multer
 const upload = multer(uploadConfig);
@@ -39,7 +40,14 @@ usersRouter.patch(
   upload.single('avatar'),
   async (request: Request, response: Response) => {
     try {
-      return response.json({ ok: true });
+      const updateUserAvatarService = new UpdateUserAvatarService();
+
+      const user = await updateUserAvatarService.execute({
+        userId: request.user.id,
+        avatarFileName: request.file?.filename,
+      });
+
+      return response.json(user);
     } catch (err) {
       return response.status(400).json({ error: err.message });
     }
