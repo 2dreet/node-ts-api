@@ -19,18 +19,14 @@ usersRouter.get('/', async (request: Request, response: Response) => {
 });
 
 usersRouter.post('/', async (request: Request, response: Response) => {
-  try {
-    const createUser = new CreateUserSerice();
-    const user = await createUser.execute({
-      ...request.body,
-    });
+  const createUser = new CreateUserSerice();
+  const user = await createUser.execute({
+    ...request.body,
+  });
 
-    user.password = '';
+  user.password = '';
 
-    return response.json(user);
-  } catch (err) {
-    return response.status(400).json({ error: err.message });
-  }
+  return response.json(user);
 });
 
 // Ao colocar a middleware depois da rota, ela executa apenas para a rota
@@ -39,18 +35,14 @@ usersRouter.patch(
   ensureAuthenticated,
   upload.single('avatar'),
   async (request: Request, response: Response) => {
-    try {
-      const updateUserAvatarService = new UpdateUserAvatarService();
+    const updateUserAvatarService = new UpdateUserAvatarService();
 
-      const user = await updateUserAvatarService.execute({
-        userId: request.user.id,
-        avatarFileName: request.file?.filename,
-      });
+    const user = await updateUserAvatarService.execute({
+      userId: request.user.id,
+      avatarFileName: request.file?.filename,
+    });
 
-      return response.json(user);
-    } catch (err) {
-      return response.status(400).json({ error: err.message });
-    }
+    return response.json(user);
   },
 );
 

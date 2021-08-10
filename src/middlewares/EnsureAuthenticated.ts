@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { verify } from 'jsonwebtoken';
+import AppError from '../errors/AppError';
 import auth from '../config/Auth';
 
 interface TokenPayload {
@@ -15,10 +16,11 @@ function ensureAuthenticated(
 ): void {
   const authHeader = request.headers.authorization;
   if (!authHeader) {
-    throw new Error('JWT Authorization is missing');
+    throw new AppError('JWT Authorization is missing', 401);
   }
-  const [bearer, token] = authHeader.split(' ');
+
   try {
+    const [_, token] = authHeader.split(' ');
     const { secret } = auth.jwt;
     const tokenDecoded = verify(token, secret);
     const { sub } = tokenDecoded as TokenPayload;
@@ -28,7 +30,7 @@ function ensureAuthenticated(
 
     return next();
   } catch {
-    throw new Error('Ivalid JWT token');
+    throw new AppError('JWT Token invalid or expired', 401);
   }
 }
 export default ensureAuthenticated;
